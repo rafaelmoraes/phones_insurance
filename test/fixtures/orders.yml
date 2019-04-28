@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+valid:
+  user: valid
+  imei: '000000-00-000000-0'
+  phone_model: 'Motorola V3'
+  installments: 1
+  annual_price: 1000.11
+
+invalid:
+  user: invalid
+  imei: '99999x9999x'
+  phone_model: ""
+  installments: 0
+  annual_price: -9.99

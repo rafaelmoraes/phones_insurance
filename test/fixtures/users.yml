@@ -1,0 +1,10 @@
+---
+valid:
+  name: "Rafael Moraes"
+  email: "rafael@email.com"
+  cpf: "884.736.636-40"
+
+invalid:
+  name: "Ana"
+  email: "ana@gmail"
+  cpf: "999.999.999-99"
