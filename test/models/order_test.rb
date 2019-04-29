@@ -98,4 +98,12 @@ class OrderTest < ActiveSupport::TestCase
     order = orders(:valid)
     assert_kind_of ApplicationRecord, order.user
   end
+
+  test 'should not has the attributes on the json' do
+    order = orders(:valid)
+    json_as_hash = JSON.parse(order.to_json)
+    %w[created_at updated_at user_id].each do |attribute|
+      assert_nil json_as_hash[attribute], "attribute: #{attribute}"
+    end
+  end
 end
