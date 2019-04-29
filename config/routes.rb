@@ -1,3 +1,11 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  defaults format: :json do
+    resources :users, only: %i[create index], format: false do
+      get :search, on: :collection
+      resources :orders, only: %i[create index]
+    end
+    resources :orders, only: %i[create index], format: false
+  end
 end
