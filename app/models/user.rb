@@ -15,4 +15,12 @@ class User < ApplicationRecord
 
     CPF.valid?(cpf)
   end
+
+  def self.search_by_cpf(cpf)
+    where(cpf: cpf).first if CPF.valid?(cpf)
+  end
+
+  def as_json(args)
+    super({ except: %i[created_at updated_at] }.merge args)
+  end
 end

@@ -60,4 +60,20 @@ class UserTest < ActiveSupport::TestCase
     user = User.new
     assert_kind_of ActiveRecord::Associations::CollectionProxy, user.orders
   end
+
+  test '.search_by_cpf should returns nil' do
+    assert_nil User.search_by_cpf('123.123.123-12')
+  end
+
+  test '.search_by_cpf should returns an user' do
+    assert_instance_of User, User.search_by_cpf(users(:valid).cpf)
+  end
+
+  test 'should not has the attributes on the json' do
+    user = users(:valid)
+    json_as_hash = JSON.parse(user.to_json)
+    %w[created_at updated_at].each do |attribute|
+      assert_nil json_as_hash[attribute], "attribute: #{attribute}"
+    end
+  end
 end
