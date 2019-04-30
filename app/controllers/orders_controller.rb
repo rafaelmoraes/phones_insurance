@@ -28,8 +28,7 @@ class OrdersController < ApplicationController
 
   def set_order
     @order = Order.new(order_params)
-    @order.user_id = url_user_id if url_user_id.present?
-    @order.user = User.new(user_params) if @order.user_id.nil?
+    set_user
   end
 
   def url_user_id
@@ -48,5 +47,11 @@ class OrdersController < ApplicationController
 
   def user_params
     params.require(:order).permit(user: %i[id name cpf email])[:user]
+  end
+
+  def set_user
+    @order.user_id = url_user_id if url_user_id.present?
+    @order.user_id = user_params[:id] if user_params && user_params[:id]
+    @order.user = User.new(user_params) if @order.user_id.nil?
   end
 end

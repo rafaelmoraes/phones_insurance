@@ -55,6 +55,21 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
+  test 'should create order when user#id on json' do
+    assert_difference('User.count', 0) do
+      assert_difference('Order.count', 1) do
+        post orders_url(params: { order: { imei: '123123123123123',
+                                           phone_model: 'V8',
+                                           annual_price: '500.5',
+                                           installments: 12,
+                                           user: { id: users(:valid).id } } })
+      end
+    end
+
+    assert_equal order_to_hash(Order.last), response.parsed_body
+    assert_response :created
+  end
+
   test 'should post not create order when user_id or user is empty' do
     assert_difference('User.count', 0) do
       assert_difference('Order.count', 0) do
