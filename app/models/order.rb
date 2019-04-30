@@ -13,7 +13,9 @@ class Order < ApplicationRecord
   validates :annual_price, numericality: { greater_than: 0 }
   validates :installments, numericality: { greater_than: 0, only_integer: true }
 
+  # TODO: implement an imei formatter
   # TODO: implement an imei validator
+  # TODO: validates if user already has an order with the same imei
 
   def as_json(args)
     defaults = {
