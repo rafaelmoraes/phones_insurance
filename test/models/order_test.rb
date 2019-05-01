@@ -106,4 +106,10 @@ class OrderTest < ActiveSupport::TestCase
       assert_nil json_as_hash[attribute], "attribute: #{attribute}"
     end
   end
+
+  test 'should normalize the IMEI' do
+    order = Order.new(imei: '000000000000000')
+    order.valid?
+    assert_equal '000000-00-000000-0', order.imei
+  end
 end

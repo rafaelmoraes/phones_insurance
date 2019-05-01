@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Order < ApplicationRecord
+  REGEX_IMEI_WITHOUT_DASH = /\A([0-9]{6})([0-9]{2})([0-9]{6})([0-9])\z/.freeze
+  REGEX_IMEI_WITH_DASH = /\A[0-9]{6}-[0-9]{2}-[0-9]{6}-[0-9]\z/.freeze
   IMEI_MIN_LENGTH = 15
   IMEI_MAX_LENGTH = 18
 
@@ -13,11 +15,12 @@ class Order < ApplicationRecord
   validates :annual_price, numericality: { greater_than: 0 }
   validates :installments, numericality: { greater_than: 0, only_integer: true }
 
+  validate :validate_imei
+
   default_scope { includes(:user) }
 
   # TODO: implement an imei formatter
   # TODO: implement an imei validator
-  # TODO: validates if user already has an order with the same imei
 
   def as_json(args)
     defaults = {
@@ -29,5 +32,19 @@ class Order < ApplicationRecord
       }
     }
     super(defaults.merge(args))
+  end
+
+  def normalize_imei!
+    match = REGEX_IMEI_WITHOUT_DASH.match(imei&.strip)
+    return nil if match.nil?
+
+    self.imei = "#{match[1]}-#{match[2]}-#{match[3]}-#{match[4]}"
+  end
+
+  def validate_imei
+    normalize_imei!
+    return true if REGEX_IMEI_WITH_DASH.match?(imei)
+
+    errors.add(:imei, :invalid)
   end
 end
