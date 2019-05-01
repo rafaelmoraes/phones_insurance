@@ -76,4 +76,10 @@ class UserTest < ActiveSupport::TestCase
       assert_nil json_as_hash[attribute], "attribute: #{attribute}"
     end
   end
+
+  test 'should normalize the cpf' do
+    user = User.new(cpf: '47769407524')
+    user.valid?
+    assert_equal '477.694.075-24', user.cpf
+  end
 end
