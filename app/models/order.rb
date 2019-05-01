@@ -19,9 +19,6 @@ class Order < ApplicationRecord
 
   default_scope { includes(:user) }
 
-  # TODO: implement an imei formatter
-  # TODO: implement an imei validator
-
   def as_json(args)
     defaults = {
       except: %i[created_at updated_at user_id],
